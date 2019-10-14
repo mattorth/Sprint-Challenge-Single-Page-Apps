@@ -7,8 +7,8 @@ import SearchForm from "./SearchForm";
 export default function CharacterList(props) {
   // TODO: Add useState to track data from useEffect
 
-  const [characters, setCharacters] = useState([])
-  const [search, setSearch] = useState("");
+  const [characters, setCharacters] = useState([]);
+  const [search, setSearch] = useState('');
   
   const Home = styled.h1`
     font-size: 3rem;
@@ -18,23 +18,18 @@ export default function CharacterList(props) {
   useEffect(() => {
     // TODO: Add API Request here - must run in `useEffect`
     //  Important: verify the 2nd `useEffect` parameter: the dependancies array!
-    const getCharacters = () => {
-      axios
-        .get(`https://rickandmortyapi.com/api/character//`)
-        .then(response => {
-          console.log(response);
-          setCharacters(response.data.results);
-        })
-        .catch(error => {
-          console.log('Server Error', error);
-        });
-    }
+    axios
+      .get(`https://rickandmortyapi.com/api/character/?name=${search}`)
+      .then(response => {
+        console.log(response);
+        setCharacters(response.data.results);
+      })
+      .catch(error => {
+        console.log('Server Error', error);
+      });
 
-    getCharacters();
-  }, []);
+  }, [search]);
   
-  console.log(characters);
-
   const handleChange = (event) => {
     event.preventDefault();
     setSearch(event.target.value);
@@ -51,9 +46,10 @@ export default function CharacterList(props) {
         props.history.push('/');
       }}>
         <Home>Home</Home>
-        <SearchForm handleChange={handleChange} handleSubmit={handleSubmit}/>
-        
       </div>
+
+      <SearchForm placeholder='search' value={search} handleChange={handleChange} handleSubmit={handleSubmit} />
+        
       {characters.map(character => (
         <CharacterCard key={character.id} character={character} />
     ))}

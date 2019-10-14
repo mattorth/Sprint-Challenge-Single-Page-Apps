@@ -9,6 +9,7 @@ export default function App() {
 
   return (
     <main>
+      <Header />
       <Route exact path="/" render={(props) => {
         return <WelcomePage />
       }} />
